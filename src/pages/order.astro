@@ -1,0 +1,12 @@
+---
+import Layout from "../layout/Layout.astro";
+import Topbar from "../components/navbar/Topbar.astro";
+import Sidebar from "../components/navbar/Sidebar.astro";
+import Content from "../components/order/Content.astro";
+---
+
+<Layout title="Floris Admin">
+    <Topbar slot="topbar" />
+    <Sidebar slot="sidebar" title="Floris Admin"/>
+    <Content />
+</Layout>
