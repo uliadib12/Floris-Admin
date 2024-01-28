@@ -103,13 +103,13 @@ function getData(year: string) : Promise<DashboardModel>
                         'Dec': 12000000,
                     },
                     revenueSources: {
-                        'Papan Bunga': 1000000,
+                        'Papan Bunga': 2000000,
                         'Bouquet': 2000000,
                         'Money Cake': 3000000,
                         'Snack Tower': 4000000,
                     },
                     revenuePayment: {
-                        'COD': 1000000,
+                        'COD': 2000000,
                         'Transfer': 2000000,
                     }
                 })
