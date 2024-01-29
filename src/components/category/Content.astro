@@ -1,21 +1,164 @@
 <div 
+class="invisible"
 id="content-category">
 
-    <!-- Modal -->
-    <div class="modal fade" id="modalCategory" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <!-- Modal Image -->
+    <div
+    class="modal fade" id="modalImage">
+        <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <div class="modal-body">
+                <img id="image" src="" alt="">
+            </div>
+        </div>
+        </div>
+    </div>
+
+    <!-- Modal Add Variant -->
+    <div
+    style="z-index: 9999" 
+    class="modal fade" id="modalAddVariant" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-            <h5 class="modal-title" id="modalCategoryTitle"></h5>
+            <h5 class="modal-title" id="modalAddVariantTitle">Add Variant</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
             </button>
             </div>
             <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <label for="variant">Name Variant</label>
+                        <input type="text" class="form-control" id="name" name="name">
+                    </div>
+                    <div class="form-group">
+                        <label for="price">Price Variant</label>
+                        <input type="number" class="form-control" id="price" name="price">
+                    </div>
+                    <div>
+                        <label for="stock">Stock Variant</label>
+                        <input type="number" class="form-control" id="stock" name="stock">
+                    </div>
+                    <div>
+                        <label for="size">Size Variant</label>
+                        <input type="text" class="form-control" id="size" name="size">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button 
+                id="add-variant"
+                type="submit" class="btn btn-primary">Add Variant</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+        </div>
+    </div>
+
+    <!-- Edit Modal -->
+    <div
+    style="z-index: 9999" 
+    class="modal fade" id="modalEditVariant" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title" id="modalEditVariantTitle">Edit Variant</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <input type="hidden" name="id" id="id">
+                    <input type="hidden" name="variantIndex" id="variantIndex">
+                    <div class="form-group">
+                        <label for="variant">Name Variant</label>
+                        <input type="text" class="form-control" id="name">
+                    </div>
+                    <div class="form-group">
+                        <label for="price">Price Variant</label>
+                        <input type="number" class="form-control" id="price">
+                    </div>
+                    <div>
+                        <label for="stock">Stock Variant</label>
+                        <input type="number" class="form-control" id="stock">
+                    </div>
+                    <div>
+                        <label for="size">Size Variant</label>
+                        <input type="text" class="form-control" id="size">
+                    </div>
+                </form>
             </div>
             <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary"></button>
+            <button type="button" class="btn btn-primary">Edit Variant</button>
+            </div>
+        </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="modalAdd" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title" id="modalAddTitle">Add Product</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            </div>
+            <div class="modal-body">
+                <form id="form-add-product">
+                    <!-- multiple image upload -->
+                    <div class="form-group">
+                        <label for="images">Images</label>
+                        <input type="file" class="form-control-file" id="images" multiple>
+                      </div>
+                    <div class="form-group">
+                        <label for="name">Name Product</label>
+                        <input type="text" class="form-control" id="name">
+                    </div>
+                    <div class="form-group">
+                        <label for="description">Description Product</label>
+                        <textarea class="form-control" id="description" rows="3"></textarea>
+                    </div>
+                    <!-- button to add variant -->
+                    <button type="button" class="btn btn-primary mb-3" data-toggle="modal" data-target="#modalAddVariant">
+                        Add Variant
+                    </button>
+                    <!-- table variant -->
+                    <table class="table table-bordered" id="dataTableVariant" width="100%" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th>Variant</th>
+                                <th>Price</th>
+                                <th>Stock</th>
+                                <th>Size</th>
+                            </tr>
+                        </thead>
+                        <tfoot>
+                            <tr>
+                                <th>Variant</th>
+                                <th>Price</th>
+                                <th>Stock</th>
+                                <th>Size</th>
+                            </tr>
+                        </tfoot>
+                        <tbody>
+                            
+                        </tbody>
+                    </table>
+                </form>
+            </div>
+            <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button 
+            id="add-product"
+            type="button" class="btn btn-primary">Add Product</button>
             </div>
         </div>
         </div>
@@ -30,7 +173,7 @@ id="content-category">
             id="category-title"
             class="h3 text-gray-800"></h1>
 
-            <button class="btn btn-primary" data-toggle="modal" data-target="#modalCategory">
+            <button class="btn btn-primary" data-toggle="modal" data-target="#modalAdd">
                 Add Product
             </button>
         </div>
@@ -42,6 +185,7 @@ id="content-category">
                     <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                         <thead>
                             <tr>
+                                <th>Product ID</th>
                                 <th>Name</th>
                                 <th>Variants</th>
                                 <th>Images</th>
@@ -50,6 +194,7 @@ id="content-category">
                         </thead>
                         <tfoot>
                             <tr>
+                                <th>Product ID</th>
                                 <th>Name</th>
                                 <th>Variants</th>
                                 <th>Images</th>
@@ -74,3 +219,5 @@ id="content-category">
     .replace(/\b\w/g, l => l.toUpperCase());
     category.innerHTML = parsed_category_name;
 </script>
+
+<script src="./script/onInit.ts"></script>

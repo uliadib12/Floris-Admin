@@ -10,20 +10,16 @@ async function onInit() : Promise<void> {
 
 function getData() : Promise<UserModel[]> {
   return new Promise((resolve, reject) => {
-    resolve([
-        {
-            id: 1,
-            email: "john@gmail.com",
-            createdDate: "2021-01-01",
-            banned: false
+    $.ajax({
+        url: `${import.meta.env.PUBLIC_BACKEND}/api/v1/users`,
+        method: 'GET',
+        success: (data) => {
+            resolve(data);
         },
-        {
-            id: 2,
-            email: "aduh@gmail.com",
-            createdDate: "2021-01-02",
-            banned: false
-        },
-    ]);
+        error: (error) => {
+            reject(error);
+        }
+    });
   });
 }
 
@@ -36,7 +32,7 @@ function setDataToTable(data: UserModel[]) {
         tr.innerHTML = `
             <td>${user.id}</td>
             <td>${user.email}</td>
-            <td>${user.createdDate}</td>
+            <td>${user.createdAt}</td>
             <td>${user.banned}</td>
         `;
         tbody.appendChild(tr);

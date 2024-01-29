@@ -1,23 +1,23 @@
 export default class UserModel {
     id: number
     email: string
-    createdDate: string
+    createdAt: string
     banned: boolean
 
     constructor({
         id = 0,
         email = '',
-        createdDate = '',
+        createdAt = '',
         banned = false
     } : {
         id?: number,
         email?: string,
-        createdDate?: string,
+        createdAt?: string,
         banned?: boolean
     }) {
         this.id = id;
         this.email = email;
-        this.createdDate = createdDate;
+        this.createdAt = createdAt;
         this.banned = banned;
     }
 
@@ -26,7 +26,7 @@ export default class UserModel {
         return new UserModel({
             id: json.id,
             email: json.email,
-            createdDate: json.createdDate,
+            createdAt: json.createdAt,
             banned: json.banned
         });
     }

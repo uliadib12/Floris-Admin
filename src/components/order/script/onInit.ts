@@ -36,7 +36,7 @@ function getData(year: string) : Promise<OrderModel[]>
             user: new UserModel({
                 id: 1,
                 email: 'test',
-                createdDate: 'test',
+                createdAt: 'test',
                 banned: false
             }),
             address: new AddressModel({
@@ -78,7 +78,7 @@ function getData(year: string) : Promise<OrderModel[]>
             user: new UserModel({
                 id: 2,
                 email: 'test2',
-                createdDate: 'test2',
+                createdAt: 'test2',
                 banned: false
             }),
             address: new AddressModel({
@@ -226,7 +226,7 @@ function setOnButtonClickButtonUserModal(){
         modal.find('.modal-title').text(`user ${user.id}`);
         modal.find('.modal-body').html(`
             <p><strong>Email:</strong> ${user.email}</p>
-            <p><strong>Created Date:</strong> ${user.createdDate}</p>
+            <p><strong>Created Date:</strong> ${user.createdAt}</p>
             <p><strong>Banned:</strong> ${user.banned ? 'Yes' : 'No'}</p>
         `);
     });
