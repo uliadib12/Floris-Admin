@@ -12,7 +12,6 @@ async function onInit() : Promise<void> {
 async function getData() : Promise<CategoryModel[]> {
     const data = await fetch(`${import.meta.env.PUBLIC_BACKEND}/api/v1/category/${getCategoryName()}`)
     const json = await data.json();
-    console.log(json);
     const product : CategoryModel[] = [];
     json.forEach((category : any) => {
         category = new CategoryModel({
@@ -38,6 +37,7 @@ function setDataToTable(data: CategoryModel[]) {
         tr.insertCell().innerHTML = createVariantButton(category.id, category.variants).map((button) => button.outerHTML).join('<br><br>');
         tr.insertCell().innerHTML = createImageButton(category.id, category.images).map((button) => button.outerHTML).join('<br><br>');
         tr.insertCell().innerText = category.description;
+        tr.insertCell().innerHTML = `<button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#modalDelete" data-id="${category.id}">Delete</button>`;
     });
 
     setOnVariantButtonClick();
@@ -202,7 +202,7 @@ async function sendToServer(
             images.push(base64);
         }
     }
-    
+
     const res = await fetch(`${import.meta.env.PUBLIC_BACKEND}/api/v1/category/${getCategoryName()}/add-product`, {
         method: 'POST',
         body: new URLSearchParams({
@@ -242,4 +242,43 @@ function getDataOnVariantTabel(){
     });
 
     return variants;
+}
+
+function setOnModalDeleteShow(){
+    const modal = $('#modalDelete');
+    modal.on('show.bs.modal', (event : any) => {
+        const button = event.relatedTarget;
+        const id = button.getAttribute('data-id');
+        const modalDelete = $('#modalDelete');
+        modalDelete.find('#id').val(id);
+    });
+}
+
+setOnModalDeleteShow();
+
+function setOnDelete(){
+    const modal = $('#modalDelete');
+    const button = modal.find('#delete-product')[0] as HTMLButtonElement;
+    button.addEventListener('click', () => {
+        const id = modal.find('#id')[0] as HTMLInputElement;
+        sendDeleteToServer(id.value);
+    });
+}
+setOnDelete();
+
+async function sendDeleteToServer(id : string){
+    const res = await fetch(`${import.meta.env.PUBLIC_BACKEND}/api/v1/category/${getCategoryName()}/delete-product`, {
+        method: 'DELETE',
+        body: new URLSearchParams({
+            id: id
+        }),
+    });
+
+    if(res.status === 200){
+        alert('Success');
+        window.location.reload();
+    }
+    else{
+        alert('Failed');
+    }
 }

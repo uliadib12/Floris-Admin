@@ -2,6 +2,39 @@
 class="invisible"
 id="content-category">
 
+    <!-- Modal Delete -->
+    <div
+    style="z-index: 9999"
+    class="modal fade" id="modalDelete" tabindex="-1" role="dialog" aria-labelledby="modalDeleteTitle" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div 
+            class="modal-header">
+            <h5 class="modal-title" id="modalDeleteTitle">Delete Product</h5>
+            <button 
+            id="close-modal-delete"
+            type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span 
+                id="close-modal-delete-span"
+                aria-hidden="true">&times;</span>
+            </button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure want to delete this product?</p>
+            </div>
+            <input type="hidden" name="id" id="id">
+            <div class="modal-footer">
+            <button 
+            id="cancel-delete"
+            type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+            <button 
+            id="delete-product"
+            type="button" class="btn btn-danger">Delete</button>
+            </div>
+        </div>
+        </div>
+    </div>
+
     <!-- Modal Image -->
     <div
     class="modal fade" id="modalImage">
@@ -11,7 +44,7 @@ id="content-category">
                 <span aria-hidden="true">&times;</span>
             </button>
             <div class="modal-body">
-                <img id="image" src="" alt="" height="100px">
+                <img id="image" src="" alt="" height="300px">
             </div>
         </div>
         </div>
@@ -190,6 +223,7 @@ id="content-category">
                                 <th>Variants</th>
                                 <th>Images</th>
                                 <th>Description</th>
+                                <th>Delete</th>
                             </tr>
                         </thead>
                         <tfoot>
@@ -199,6 +233,7 @@ id="content-category">
                                 <th>Variants</th>
                                 <th>Images</th>
                                 <th>Description</th>
+                                <th>Delete</th>
                             </tr>
                         </tfoot>
                         <tbody>
