@@ -9,48 +9,23 @@ async function onInit() : Promise<void> {
     makeContentVisible();
 }
 
-function getData() : Promise<CategoryModel[]> {
-    return new Promise((resolve, reject) => {
-        resolve([
-            new CategoryModel({
-                id: 1,
-                name: "Category 1",
-                variants: [
-                    new VariantModel({
-                        name: "Variant 1",
-                        price: 100,
-                        stock: 10,
-                        size: "S"
-                    }),
-                    new VariantModel({
-                        name: "Variant 2",
-                        price: 200,
-                        stock: 20,
-                        size: "M"
-                    }),
-                    new VariantModel({
-                        name: "Variant 3",
-                        price: 300,
-                        stock: 30,
-                        size: "L"
-                    }),
-                ],
-                images: [
-                    "https://via.placeholder.com/150",
-                    "https://via.placeholder.com/150",
-                    "https://via.placeholder.com/150",
-                ],
-                description: "Category 1 description"
-            }),
-            new CategoryModel({
-                id: 2,
-                name: "Category 2",
-                variants: [],
-                images: [],
-                description: "Category 2 description"
-            }),
-        ]);
+async function getData() : Promise<CategoryModel[]> {
+    const data = await fetch(`${import.meta.env.PUBLIC_BACKEND}/api/v1/category/${getCategoryName()}`)
+    const json = await data.json();
+    console.log(json);
+    const product : CategoryModel[] = [];
+    json.forEach((category : any) => {
+        category = new CategoryModel({
+            id: category.id,
+            name: category.name,
+            description: category.description,
+            images: category.images,
+            variants: category.variants
+        });
+        product.push(category);
     });
+
+    return product;
 }
 
 function setDataToTable(data: CategoryModel[]) {
