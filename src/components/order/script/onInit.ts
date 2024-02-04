@@ -30,91 +30,45 @@ async function onInit() : Promise<void>
 function getData(year: string) : Promise<OrderModel[]>
 {
     return new Promise((resolve, reject) => {
-       resolve([
-        new OrderModel({
-            id: 1,
-            user: new UserModel({
-                id: 1,
-                email: 'test',
-                createdAt: 'test',
-                banned: false
-            }),
-            address: new AddressModel({
-                name: 'test',
-                email: 'test',
-                phone: 'test',
-                address: 'Jl. Test',
-                day: 'test',
-                time: 'test'
-            }),
-            products: [
-                new ProductModel({
-                    name: 'test',
-                    variant: 'test',
-                    quantity: 1,
-                    additionalInfo: 'test',
-                    price: 1
-                })
-            ],
-            payment: {
-                name: 'test'
+        $.ajax({
+            url: `${import.meta.env.PUBLIC_BACKEND}/api/v1/orders`,
+            method: 'GET',
+            success: (data) => {
+                resolve(
+                    data.map((order: any) => {
+                        return new OrderModel({
+                            id: order.id,
+                            address: new AddressModel(
+                                {
+                                    name: order.address.name,
+                                    email: order.address.email,
+                                    phone: order.address.phone,
+                                    address: order.address.address,
+                                    day: order.address.day,
+                                    time: order.address.time
+                                }
+                            ),
+                            products: order.products.map((product: any) => {
+                                return new ProductModel({
+                                    name: product.name,
+                                    variant: product.variant,
+                                    quantity: product.quantity,
+                                    additionalInfo: product.additionalInfo,
+                                    price: product.price
+                                });
+                            }),
+                            payment: { name: order.payment },
+                            price: order.products.reduce((acc: number, product: any) => acc + product.price, 0),
+                            orderDate: order.createAt,
+                            orderStatus: order.status
+                        });  
+                    }                       
+                ));
             },
-            price: 1,
-            orderDate: 'test',
-            orderStatus: 'test',
-            nextStep: [
-                {
-                    type: {
-                        name: 'success',
-                        color: 'success'
-                    },
-                    name: 'next step'
-                }
-            ]
-        })
-       ,
-        new OrderModel({
-            id: 2,
-            user: new UserModel({
-                id: 2,
-                email: 'test2',
-                createdAt: 'test2',
-                banned: false
-            }),
-            address: new AddressModel({
-                name: 'test',
-                email: 'test',
-                phone: 'test',
-                address: 'Jl. Test',
-                day: 'test',
-                time: 'test'
-            }),
-            products: [
-                new ProductModel({
-                    name: 'test',
-                    variant: 'test',
-                    quantity: 1,
-                    additionalInfo: 'test',
-                    price: 1
-                })
-            ],
-            payment: {
-                name: 'test'
-            },
-            price: 1,
-            orderDate: 'test',
-            orderStatus: 'test',
-            nextStep: [
-                {
-                    type: {
-                        name: 'test',
-                        color: 'test'
-                    },
-                    name: 'test'
-                }
-            ]
-        })
-    ]);
+            error: (error) => {
+                reject(error);
+            }
+        });
     });
 }
 
@@ -133,6 +87,7 @@ function setDataToTable(data: OrderModel[]) : void
         const orderDateCell = row.insertCell();
         const orderStatusCell = row.insertCell();
         const nextStepCell = row.insertCell();
+        const printCell = row.insertCell();
 
         idCell.innerText = order.id.toString();
         userCell.innerHTML = order.user ? createButtonElementToShowUserModal(order.user).outerHTML : '-';
@@ -142,12 +97,55 @@ function setDataToTable(data: OrderModel[]) : void
         priceCell.innerHTML = order.price.toString();
         orderDateCell.innerHTML = order.orderDate;
         orderStatusCell.innerHTML = order.orderStatus;
-        nextStepCell.innerHTML = order.nextStep.map(step => `<button class="badge badge-${step.type.color}">${step.name}</button>`).join(' ');
+        nextStepCell.innerHTML = 
+            order.orderStatus === 'pending'
+            ? `<button 
+            id="nextStepButton"
+            data-id="${order.id}"
+            data-nextStep="confirm"
+            class="badge bg-primary text-white">Confirm</button>`
+            : order.orderStatus === 'confirm'
+            ? `<button
+            id="nextStepButton"
+            data-id="${order.id}"
+            data-nextStep="shipping"
+            class="badge bg-primary text-white">Shipping</button>`
+            : order.orderStatus === 'shipping'
+            ? `<button
+            id="nextStepButton"
+            data-id="${order.id}"
+            data-nextStep="delivered"
+            class="badge bg-primary text-white">Delivered</button>`
+            : '-';
+
+            printCell.innerHTML = `<a href="${import.meta.env.PUBLIC_BACKEND}/api/v1/order/${order.id}/print" target="_blank" class="badge bg-primary text-white">Print</a>`;
     });
 
     setOnButtonClickButtonUserModal();
     setOnButtonClickButtonAddressModal();
     setOnButtonClickButtonProductModal();
+    onNextStepButtonClick();
+}
+
+function onNextStepButtonClick() : void
+{
+    const nextStepButton = $('#nextStepButton');
+    nextStepButton.on('click', function(){
+        alert('loading');
+        const id = $(this).attr('data-id');
+        const nextStep = $(this).attr('data-nextStep');
+        $.ajax({
+            url: `${import.meta.env.PUBLIC_BACKEND}/api/v1/order/${id}`,
+            method: 'PATCH',
+            data: { status: nextStep },
+            success: () => {
+                window.location.reload();
+            },
+            error: (error) => {
+                console.error(error);
+            }
+        });
+    });
 }
 
 function setYearInOrder(year: string) : void

@@ -22,7 +22,6 @@ export default class OrderModel {
     constructor(
         {
             id = 0,
-            user = undefined,
             address = new AddressModel({}),
             products = [],
             payment = { name: '' },
@@ -49,7 +48,7 @@ export default class OrderModel {
         }
     ) {
         this.id = id;
-        this.user = user;
+
         this.address = address;
         this.products = products;
         this.payment = payment;
